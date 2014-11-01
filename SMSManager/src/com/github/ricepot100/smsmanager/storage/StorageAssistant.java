@@ -1,6 +1,8 @@
 package com.github.ricepot100.smsmanager.storage;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import com.github.ricepot100.smsmanager.Assistant;
 
@@ -10,7 +12,9 @@ import android.util.Log;
 public class StorageAssistant {
 	private static String s_ExtStorageAbsoluteDirectory = null;
 	private static String s_RootStorageAbsoluteDirectory = null;
-	public static boolean createInitStorage() {
+	private static String s_RootRecordFile = null;
+	
+	private static boolean createInitStorage() {
 		if (Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
 			File f_extStorage = Environment.getExternalStorageDirectory();
 			s_ExtStorageAbsoluteDirectory = f_extStorage.getAbsolutePath();
@@ -38,9 +42,17 @@ public class StorageAssistant {
 		return true;
 	}
 	
-	public static void WriteToRecord(String text) {
+	public static void WriteSmsToRecord(String text) {
 		if (StorageAssistant.createInitStorage()) {
-			
+			s_RootRecordFile = s_RootStorageAbsoluteDirectory + "/" + Assistant.SMSRecordFile;
+			try {
+				FileWriter fw_record = new FileWriter(s_RootRecordFile);
+				fw_record.write(text);
+				fw_record.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

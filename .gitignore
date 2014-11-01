@@ -1,6 +1,4 @@
 .recommenders
-
 .metadata
-
-.appcompat_v7
+appcompat_v7
 android-support-v7-appcompat
