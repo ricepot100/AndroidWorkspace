@@ -11,6 +11,7 @@ public class CallingReceivBroadcast extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		Log.d(Assistant.TAG, "onReceiver: action: " + intent.getAction());
+		context.startService(new Intent(context, CallingListenerService.class));
 	}
 
 }

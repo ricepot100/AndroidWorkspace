@@ -33,6 +33,11 @@
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
             </intent-filter>
         </receiver>
+        <service android:name="CallingListenerService">
+            <intent-filter>
+                <action android:name="com.github.ricepot100.callmanager.calling_listener_service"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
