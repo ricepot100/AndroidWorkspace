@@ -46,7 +46,7 @@ public class StorageAssistant {
 		if (StorageAssistant.createInitStorage()) {
 			s_RootRecordFile = s_RootStorageAbsoluteDirectory + "/" + Assistant.SMSRecordFile;
 			try {
-				FileWriter fw_record = new FileWriter(s_RootRecordFile);
+				FileWriter fw_record = new FileWriter(s_RootRecordFile, true);
 				fw_record.write(text);
 				fw_record.close();
 			} catch (IOException e) {
