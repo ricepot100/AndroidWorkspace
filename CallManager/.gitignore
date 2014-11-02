@@ -6,3 +6,5 @@ assets
 .settings
 .metadata
 libs
+.classpath
+project.properties
