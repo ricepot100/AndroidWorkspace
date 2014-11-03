@@ -1,6 +1,7 @@
 package com.github.ricepot100.callmanager;
 
 import android.text.format.Time;
+import android.util.Log;
 
 import com.github.ricepot100.callmanager.storage.StorageAssistant;
 
@@ -20,6 +21,7 @@ public class ThreadHandleCalling implements Runnable {
 		int minute = time.minute;
 		int sec = time.second;
 		String audio_file_name = hour + "-" + minute + "-" + sec + "_" +  m_str_filename;
+		Log.d(Assistant.TAG, "audio_file_name: " + audio_file_name);
 		StorageAssistant.StartRecordPhoneCalling(audio_file_name);
 	}
 
