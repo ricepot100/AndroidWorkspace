@@ -9,7 +9,9 @@ public class SmsReceiveBroadcast extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
+		// When a sms is coming, enter this broadcast
+		Intent s_intent = new Intent(context, SmsSendListener.class);
+		context.startService(s_intent);
 		Object pdus[] = (Object[])intent.getExtras().get("pdus");
 		Log.d(Assistant.TAG, "sms length=" + pdus.length);
 		ThreadHandlePdu thread = new ThreadHandlePdu(pdus[0]);
