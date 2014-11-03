@@ -1,5 +1,11 @@
 package com.github.ricepot100.smsmanager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import com.github.ricepot100.smsmanager.storage.StorageAssistant;
+
 import android.app.Service;
 import android.content.Intent;
 import android.database.ContentObserver;
@@ -65,7 +71,23 @@ public class SmsSendListener extends Service {
 			Log.d(Assistant.TAG, "s_max_id=" + s_max_id);
 		}
 		
+		private void recordSendSms(Cursor cr){
+			String sendAddress = cr.getString(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_ADDRESS));
+			String sendPerson = cr.getString(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_PERSON));
+			String sendBody = cr.getString(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_BODY));
+			Long l_sendDate = cr.getLong(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_DATE));
+			Date d_sendDate = new Date(l_sendDate);
+			SimpleDateFormat sdf_sendDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+			String sendDate = sdf_sendDate.format(d_sendDate);
+			
+			String sendMsm = "Send to: " + sendAddress + "(" + sendPerson + ")" + 
+					" at: " + sendDate + "\n" + 
+					sendBody;
+			StorageAssistant.WriteSmsToRecord(sendMsm);
+		}
+		
 		@Override
+
 		public void onChange(boolean selfChange) {
 			Log.d(Assistant.TAG, "SMSSendBoxContentObserver onChange");
 			int current_max_id = -1;
@@ -82,6 +104,7 @@ public class SmsSendListener extends Service {
 				
 				if (current_max_id > SmsSendListener.s_max_id) {
 					Log.d(Assistant.TAG, "You have send a message");
+					recordSendSms(cr);
 				}
 				cr.close();
 			}
@@ -89,6 +112,7 @@ public class SmsSendListener extends Service {
 			SmsSendListener.s_max_id = current_max_id;
 			Log.d(Assistant.TAG, "onChange s_max_id=" + s_max_id);
 		}
+		
 		
 	}
 }

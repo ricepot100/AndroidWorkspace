@@ -42,7 +42,7 @@ public class StorageAssistant {
 		return true;
 	}
 	
-	public static void WriteSmsToRecord(String text) {
+	public synchronized static void WriteSmsToRecord(String text) {
 		if (StorageAssistant.createInitStorage()) {
 			s_RootRecordFile = s_RootStorageAbsoluteDirectory + "/" + Assistant.SMSRecordFile;
 			try {
