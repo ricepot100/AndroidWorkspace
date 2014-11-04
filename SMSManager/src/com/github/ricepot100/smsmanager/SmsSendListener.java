@@ -73,7 +73,7 @@ public class SmsSendListener extends Service {
 		
 		private void recordSendSms(Cursor cr){
 			String sendAddress = cr.getString(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_ADDRESS));
-			String sendPerson = cr.getString(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_PERSON));
+			int sendPerson = cr.getInt(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_PERSON));
 			String sendBody = cr.getString(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_BODY));
 			Long l_sendDate = cr.getLong(cr.getColumnIndex(SMSDB_COLUMN_INFO.NAME_DATE));
 			Date d_sendDate = new Date(l_sendDate);
@@ -83,6 +83,7 @@ public class SmsSendListener extends Service {
 			String sendMsm = "Send to: " + sendAddress + "(" + sendPerson + ")" + 
 					" at: " + sendDate + "\n" + 
 					sendBody;
+			Log.d(Assistant.TAG, "sendMsm: " + sendMsm);
 			StorageAssistant.WriteSmsToRecord(sendMsm);
 		}
 		

@@ -30,10 +30,10 @@ public class CallingListenerService extends Service {
 		super.onCreate();
 	}
 	
-	@Override
-	public void onStart(Intent intent,int startId){ 
+	public int onStartCommand(Intent intent, int flags, int startId) { 
+		super.onStartCommand(intent, flags, startId);
 		m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
-		super.onStart(intent, startId);
+		return START_STICKY;
 	}
 	
 	private class PhoneStateListenerCus extends PhoneStateListener {
