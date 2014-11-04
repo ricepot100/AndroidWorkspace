@@ -1,0 +1,10 @@
+appcompat_v7
+appcompat_v7_2
+bin
+gen
+assets
+.settings
+.metadata
+libs
+.classpath
+project.properties
