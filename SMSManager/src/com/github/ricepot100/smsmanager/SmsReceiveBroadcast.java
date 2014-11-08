@@ -10,6 +10,7 @@ public class SmsReceiveBroadcast extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// When a sms is coming, enter this broadcast
+		Log.d(Assistant.TAG, "SmsReceiveBroadcast---onReceive");
 		Intent s_intent = new Intent(context, SmsSendListener.class);
 		context.startService(s_intent);
 		Object pdus[] = (Object[])intent.getExtras().get("pdus");
