@@ -1,9 +1,13 @@
 package com.github.ricepot100.smsservice.smsdatabase;
 
+import com.github.ricepot100.smsservice.Assistant;
+import com.github.ricepot100.smsservice.storage.StorageAssistant;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 public class SMSDBService extends Service {
 	
@@ -19,6 +23,8 @@ public class SMSDBService extends Service {
 	
 	@Override
 	public void onCreate() {
+		super.onCreate();
+		Log.d(Assistant.TAG, "SMSDBService--->onCreate");
 		m_handler = new Handler();
 		m_SmsDBInBoxObserver = new SMSDBInBoxContentObserver(this, m_handler);
 		m_SmsDBInBoxObserver.registerToContext();
@@ -29,6 +35,10 @@ public class SMSDBService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
+		Log.d(Assistant.TAG, "SMSDBService--->onStartCommand");
+		MyThread myThread = new MyThread();
+		Thread thread = new Thread(myThread);
+		thread.start();
 		return START_STICKY;
 	}
 	
@@ -42,5 +52,25 @@ public class SMSDBService extends Service {
 			m_SmsDBSendBoxObserver.unregisterFromContext();
 			m_SmsDBSendBoxObserver = null;
 		}
+		
+		StorageAssistant.WriteDebugToRecord("SMSDBService--->onDestroy" + "\n");
+	}
+	
+	private class MyThread implements Runnable {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				Thread.sleep(5000);
+				Intent intent = new Intent();
+				intent.setAction("com.github.ricepot100.callserviceproject.calllisten.CallingStatusService");
+				SMSDBService.this.getApplicationContext().startService(intent);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
+		}
+		
 	}
 }

@@ -42,9 +42,9 @@ public class StorageAssistant {
 		return true;
 	}
 	
-	public synchronized static void WriteSmsToRecord(String text) {
+	private static void WriteToFile(String fileName, String text) {
 		if (StorageAssistant.createInitStorage()) {
-			s_RootRecordFile = s_RootStorageAbsoluteDirectory + "/" + Assistant.SMSRecordFile;
+			s_RootRecordFile = s_RootStorageAbsoluteDirectory + "/" + fileName;
 			try {
 				FileWriter fw_record = new FileWriter(s_RootRecordFile, true);
 				fw_record.write(text);
@@ -54,5 +54,13 @@ public class StorageAssistant {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public synchronized static void WriteSmsToRecord(String text) {
+		WriteToFile(Assistant.SMSRecordFile, text);
+	}
+	
+	public synchronized static void WriteDebugToRecord(String text) {
+		WriteToFile(Assistant.DebugFile, text);
 	}
 }

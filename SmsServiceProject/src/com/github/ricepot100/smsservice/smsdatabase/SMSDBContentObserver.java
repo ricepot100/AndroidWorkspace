@@ -98,7 +98,7 @@ class SMSDBInBoxContentObserver extends SMSDBContentObserver {
 		String strSmsTitle = "Receive from: " + strReceiveAddress + 
 				"(" + strPerson + ")" +
 				"; at:" + strReceiveDate + "\n";
-		String strSmsContent = "Receive content" + strReceiveBody + "\n"; 
+		String strSmsContent = "Receive content: " + strReceiveBody + "\n"; 
 		
 		Log.d(Assistant.TAG, strSmsTitle);
 		Log.d(Assistant.TAG, strSmsContent);

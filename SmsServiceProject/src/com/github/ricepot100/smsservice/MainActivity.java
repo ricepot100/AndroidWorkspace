@@ -1,9 +1,14 @@
 package com.github.ricepot100.smsservice;
 
+import com.github.ricepot100.smsservice.smsdatabase.SMSDBService;
+
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -11,6 +16,16 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Button btn_startC = (Button)findViewById(R.id.id_startC);
+		btn_startC.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(MainActivity.this.getApplicationContext(), SMSDBService.class);
+				startService(intent);
+			}
+		});
+		
 	}
 
 	@Override
