@@ -68,7 +68,7 @@ public class CallingListenerService extends Service {
 				}else {
 					m_outPhone = CallingListenerService.this.m_outphone_number;
 					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call to: " + m_outPhone + "\n");
-					str_promotion = "to_" + m_outPhone;
+					str_promotion = "to_" + m_outPhone + ".3gp";
 				}
 				ThreadHandleCalling thread_calling = new ThreadHandleCalling(str_promotion);
 				Thread threadHandleCalling_calling = new Thread(thread_calling);
