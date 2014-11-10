@@ -1,5 +1,6 @@
 package com.github.ricepot100.contentassistant;
 
+import java.util.Map;
 import java.util.Vector;
 
 import android.support.v7.app.ActionBarActivity;
@@ -65,7 +66,8 @@ public class MainActivity extends ActionBarActivity {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
 			m_btnGetTableColumnName = (Button)rootView.findViewById(R.id.id_btn_get_table_column_name);
-			getActivity().getBaseContext();
+			m_btnGetTableColumnName.setOnClickListener(new BtnListenerGetColumnName());
+			//getActivity().getBaseContext();
 			return rootView;
 		}		
 		
@@ -82,6 +84,20 @@ public class MainActivity extends ActionBarActivity {
 				for (int i=0; i<vs.size();i++) {
 					Log.d(Assistant.TAG, "column[" + i + "]" + "\tname: " + vs.get(i));
 				}
+				
+				 Vector<Map<String, String>> vec_table = ContentHelper.getTableItem(
+						 PlaceholderFragment.this.getActivity().getBaseContext(), 
+						 ContactsContract.Contacts.CONTENT_URI);	
+				 /*
+				 for (int i=0; i<vec_table.size(); i++) {
+					 Map<String, String> map_one_raw = vec_table.get(i);
+					 for (int j=0; j<map_one_raw.size(); j++) {
+						 for(String obj : map_one_raw.keySet()){
+							 Log.d(Assistant.TAG, "obj: " + map_one_raw.get(obj));
+						 }
+					 }
+				 }
+				 */
 				
 			}
 			
