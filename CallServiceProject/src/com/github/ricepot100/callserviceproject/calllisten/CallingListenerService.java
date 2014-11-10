@@ -49,25 +49,25 @@ public class CallingListenerService extends Service {
 		public void onCallStateChanged(int state,String inPhone){
 			switch(state){
 			case TelephonyManager.CALL_STATE_IDLE:
-				Log.d(Assistant.TAG, "onCallStateChanged CALL_STATE_IDLE");
+				Log.d(Assistant.TAG, "PhoneStateListenerCus CALL_STATE_IDLE");
 				m_inPhone = null;
 				StorageAssistant.StopRecordPhoneCalling();
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
-				Log.d(Assistant.TAG, "onCallStateChanged CALL_STATE_RINGING");
-				StorageAssistant.WriteCMLogToRecord("onCallStateChanged CALL_STATE_RINGING, call from: " + inPhone + "\n");
+				Log.d(Assistant.TAG, "PhoneStateListenerCus CALL_STATE_RINGING");
+				StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_RINGING, call from: " + inPhone + "\n");
 				m_inPhone = inPhone;			
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
-				Log.d(Assistant.TAG, "onCallStateChanged CALL_STATE_OFFHOOK");
+				Log.d(Assistant.TAG, "PhoneStateListenerCus CALL_STATE_OFFHOOK");
 				String str_promotion = null;
 				if (null!=m_inPhone){
-					StorageAssistant.WriteCMLogToRecord("onCallStateChanged CALL_STATE_OFFHOOK: call from: " + m_inPhone + "\n");
+					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call from: " + m_inPhone + "\n");
 					str_promotion = "from_" + m_inPhone;
 					m_inPhone = null;
 				}else {
 					m_outPhone = CallingListenerService.this.m_outphone_number;
-					StorageAssistant.WriteCMLogToRecord("onCallStateChanged CALL_STATE_OFFHOOK: call to: " + m_outPhone + "\n");
+					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call to: " + m_outPhone + "\n");
 					str_promotion = "to_" + m_outPhone;
 				}
 				ThreadHandleCalling thread_calling = new ThreadHandleCalling(str_promotion);
@@ -75,8 +75,8 @@ public class CallingListenerService extends Service {
 				threadHandleCalling_calling.start();
 				break;
 			default:
-				Log.d(Assistant.TAG, "onCallStateChanged default: state="+state);
-				StorageAssistant.WriteCMLogToRecord("onCallStateChanged default: state="+ state + "\n");
+				Log.d(Assistant.TAG, "PhoneStateListenerCus default: state="+state);
+				StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus default: state="+ state + "\n");
 			}
 		}
 	}

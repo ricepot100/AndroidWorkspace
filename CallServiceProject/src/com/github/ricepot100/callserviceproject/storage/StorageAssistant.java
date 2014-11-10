@@ -103,9 +103,11 @@ public class StorageAssistant {
 		s_recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 		
 		s_recorder.setOutputFile(s_RootCallingAudioAbsoluteDirectory + "/" + file_name);
+		Log.d(Assistant.TAG, "Audio Description: " + s_recorder.toString());
 		
 		try {
 			s_recorder.prepare();
+			s_recorder.start();
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -113,13 +115,13 @@ public class StorageAssistant {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		s_recorder.start();
-		
+			
 	}
 
 	public static void StopRecordPhoneCalling() {
 		if (null != s_recorder) {
+			Log.d(Assistant.TAG, "Stop record audio");
+			Log.d(Assistant.TAG, "Audio Description: " + s_recorder.toString());
 			s_recorder.stop();
 			s_recorder.release();
 			s_recorder = null;
