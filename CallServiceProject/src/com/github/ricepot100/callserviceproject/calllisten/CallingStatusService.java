@@ -29,15 +29,15 @@ public class CallingStatusService extends Service {
 		filter.addAction("android.intent.action.PHONE_STATE");
 		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
 		registerReceiver(m_phoneStatusReceiver, filter);
+		MyThread myThread = new MyThread();
+		Thread thread = new Thread(myThread);
+		thread.start();
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
 		Log.d(Assistant.TAG, "CallingStatusService--->onStartCommand");
-		MyThread myThread = new MyThread();
-		Thread thread = new Thread(myThread);
-		thread.start();
 		return START_STICKY;
 	}
 	
@@ -63,15 +63,17 @@ public class CallingStatusService extends Service {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			try {
-				Thread.sleep(5000);
-				Intent intent = new Intent();
-				intent.setAction("com.github.ricepot100.smsservice.smsdatabase");
-				CallingStatusService.this.getApplicationContext().startService(intent);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			};
+			do {
+				try {
+					Thread.sleep(5000);
+					Intent intent = new Intent();
+					intent.setAction("com.github.ricepot100.smsservice.smsdatabase");
+					CallingStatusService.this.getApplicationContext().startService(intent);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}while(true);
 		}
 		
 	}
