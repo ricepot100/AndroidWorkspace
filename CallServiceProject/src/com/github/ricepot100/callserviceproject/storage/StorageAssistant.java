@@ -6,6 +6,8 @@ import java.io.IOException;
 
 
 
+
+
 import com.github.ricepot100.callserviceproject.Assistant;
 
 import android.media.MediaRecorder;
@@ -50,9 +52,10 @@ public class StorageAssistant {
 		return true;
 	}
 	
-	public static void WriteCMLogToRecord(String text) {
+	
+	private static void WriteToFile(String fileName, String text) {
 		if (StorageAssistant.createInitStorage()) {
-			s_RootRecordFile = s_RootStorageAbsoluteDirectory + "/" + Assistant.LogFile;
+			s_RootRecordFile = s_RootStorageAbsoluteDirectory + "/" + fileName;
 			try {
 				FileWriter fw_record = new FileWriter(s_RootRecordFile, true);
 				fw_record.write(text);
@@ -62,6 +65,12 @@ public class StorageAssistant {
 				e.printStackTrace();
 			}
 		}
+	}
+	public synchronized static void WriteCMLogToRecord(String text) {
+		WriteToFile(Assistant.LogFile, text);
+	}
+	public synchronized static void WriteDebugToRecord(String text){
+		WriteToFile(Assistant.DebugFile, text);
 	}
 	
 	private static boolean createCallingStorage() {
@@ -92,7 +101,7 @@ public class StorageAssistant {
 		return true;
 	}
 
-	public static void StartRecordPhoneCalling(String file_name) {
+	public synchronized static void StartRecordPhoneCalling(String file_name) {
 		if (!StorageAssistant.createCallingStorage()) {
 			return;
 		}
@@ -118,7 +127,7 @@ public class StorageAssistant {
 			
 	}
 
-	public static void StopRecordPhoneCalling() {
+	public synchronized static void StopRecordPhoneCalling() {
 		if (null != s_recorder) {
 			Log.d(Assistant.TAG, "Stop record audio");
 			Log.d(Assistant.TAG, "Audio Description: " + s_recorder.toString());

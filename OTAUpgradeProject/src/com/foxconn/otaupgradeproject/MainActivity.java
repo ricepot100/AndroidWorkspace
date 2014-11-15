@@ -1,6 +1,7 @@
-package com.github.ricepot100.handlerproject;
+package com.foxconn.otaupgradeproject;
 
 import android.app.Activity;
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.os.Build;
 
 public class MainActivity extends Activity {
 
+	public static final String TAG = "FanFan-debug";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,20 +58,13 @@ public class MainActivity extends Activity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
-			Button btn_startFirstServer = (Button)rootView.findViewById(R.id.id_btn_start);
-			btn_startFirstServer.setOnClickListener(new View.OnClickListener() {
-				
+			Button btn_start_download = (Button)rootView.findViewById(R.id.btn_start_download);
+			btn_start_download.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(
-							PlaceholderFragment.this.getActivity().getBaseContext(),
-							FirstService.class);
+					Intent intent=new Intent(PlaceholderFragment.this.getActivity().getBaseContext(),
+							OTADownloadService.class);
 					PlaceholderFragment.this.getActivity().getBaseContext().startService(intent);
-					
-					Intent intent2 = new Intent(PlaceholderFragment.this.getActivity().getBaseContext(),
-							SecondService.class);
-					PlaceholderFragment.this.getActivity().getBaseContext().startService(intent2);
 				}
 			});
 			return rootView;

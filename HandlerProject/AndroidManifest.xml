@@ -22,6 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name="FirstService">
+            <intent-filter>
+                <action android:name="com.github.ricepot100.handlerproject.FirstService"/>
+            </intent-filter>
+        </service>
+        <service android:name="SecondService">
+            <intent-filter>
+                <action android:name="com.github.ricepot100.handlerproject.SecondService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

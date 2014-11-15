@@ -15,6 +15,7 @@ import android.util.Log;
 public class CallingListenerService extends Service {
 	
 	private TelephonyManager m_telephonyManager=null;
+	private PhoneStateListener m_phoneStateListener = new PhoneStateListenerCus();
 	
 	private String m_outphone_number = null;
 	
@@ -26,18 +27,29 @@ public class CallingListenerService extends Service {
 	
 	@Override
 	public void onCreate() {
-		Log.d(Assistant.TAG, "CallingListenerServer--->onCreate");
-		
+		Log.d(Assistant.TAG, "CallingListenerServer--->onCreate");	
 		m_telephonyManager = (TelephonyManager)super.getSystemService(Context.TELEPHONY_SERVICE);
-		m_telephonyManager.listen(new PhoneStateListenerCus(), PhoneStateListener.LISTEN_CALL_STATE);
+		m_telephonyManager.listen(m_phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 		super.onCreate();
 	}
 	
-	public int onStartCommand(Intent intent, int flags, int startId) { 
+	@Override
+	public synchronized int onStartCommand(Intent intent, int flags, int startId) { 
 		super.onStartCommand(intent, flags, startId);
 		Log.d(Assistant.TAG, "CallingListenerService--->onStartCommand");
 		m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
+		synchronized(m_telephonyManager) {
+			m_telephonyManager.notify();
+		}
 		return START_STICKY;
+	}
+	
+	@Override
+	public void onDestroy(){
+		Log.d(Assistant.TAG, "CallingListenerService--->onDestroy");
+		StorageAssistant.WriteDebugToRecord("CallingListenerService--->onDestroy");
+		m_telephonyManager.listen(m_phoneStateListener, PhoneStateListener.LISTEN_NONE);
+		super.onDestroy();
 	}
 	
 	
@@ -51,6 +63,7 @@ public class CallingListenerService extends Service {
 			case TelephonyManager.CALL_STATE_IDLE:
 				Log.d(Assistant.TAG, "PhoneStateListenerCus CALL_STATE_IDLE");
 				m_inPhone = null;
+				CallingListenerService.this.m_outphone_number = null;
 				StorageAssistant.StopRecordPhoneCalling();
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
@@ -63,9 +76,17 @@ public class CallingListenerService extends Service {
 				String str_promotion = null;
 				if (null!=m_inPhone){
 					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call from: " + m_inPhone + "\n");
-					str_promotion = "from_" + m_inPhone;
+					str_promotion = "from_" + m_inPhone + ".3gp";
 					m_inPhone = null;
 				}else {
+					synchronized(m_telephonyManager) {
+						try {
+							m_telephonyManager.wait(1000*2);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 					m_outPhone = CallingListenerService.this.m_outphone_number;
 					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call to: " + m_outPhone + "\n");
 					str_promotion = "to_" + m_outPhone + ".3gp";

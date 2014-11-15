@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
-public class FirstService extends Service {
+public class SecondService extends Service {
 	
 
 	@Override
@@ -18,24 +18,21 @@ public class FirstService extends Service {
 	
 	@Override
 	public void onCreate() {
-		Log.d(Assistant.TAG, "FirstService--->onCreate");
+		Log.d(Assistant.TAG, "SecondService--->onCreate");
 		Message msg = new Message();
-		msg.what = Assistant.MSG_FIRST_SERVER_01;
+		msg.what = Assistant.MSG_SECOND_SERVER_01;
 		m_handler.sendMessageDelayed(msg, 1000*10);
-		Message msg2 = new Message();
-		msg2.what = Assistant.MSG_SECOND_SERVER_03;
-		m_handler.sendMessageDelayed(msg2, 1000*15);
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(Assistant.TAG, "FirstService--->onStartCommand");
+		Log.d(Assistant.TAG, "SecondService--->onStartCommand");
 		return super.onStartCommand(intent, flags, startId);
 	}
 	
 	@Override
 	public void onDestroy() {
-		Log.d(Assistant.TAG, "FirstService--->onDestroy");
+		Log.d(Assistant.TAG, "SecondService--->onDestroy");
 		super.onDestroy();
 	}
 	
@@ -44,14 +41,17 @@ public class FirstService extends Service {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case Assistant.MSG_FIRST_SERVER_01:
-				Log.d(Assistant.TAG, "FirstService--->Handler--->MSG_FIRST_SERVER_01");
+			case Assistant.MSG_SECOND_SERVER_01:
+				Log.d(Assistant.TAG, "SecondService--->Handler--->MSG_FIRST_SERVER_01");
 				break;
-			case Assistant.MSG_FIRST_SERVER_02:
-				Log.d(Assistant.TAG, "FirstService--->Handler--->MSG_FIRST_SERVER_02");
+			case Assistant.MSG_SECOND_SERVER_02:
+				Log.d(Assistant.TAG, "SecondService--->Handler--->MSG_FIRST_SERVER_02");
+				break;
+			case Assistant.MSG_SECOND_SERVER_03:
+				Log.d(Assistant.TAG, "SecondService--->Handler--->MSG_FIRST_SERVER_03");
 				break;
 			default:
-				Log.d(Assistant.TAG, "FirstService--->Handler--->Default");
+				Log.d(Assistant.TAG, "SecondService--->Handler--->Default");
 				break;
 			}
 		}
