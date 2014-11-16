@@ -22,27 +22,50 @@ public class ContentHelper {
 		return vs;
 	}
 	
+	public static String getOneItemValueFromColumn(Cursor cr, int columnIndex) {
+		String value=null;
+		int columnType = cr.getType(columnIndex);
+		switch(columnType) {
+		case Cursor.FIELD_TYPE_NULL:
+			value=null;
+			break;
+		case Cursor.FIELD_TYPE_INTEGER:
+			value = String.valueOf(cr.getInt(columnIndex));
+			break;
+		case Cursor.FIELD_TYPE_FLOAT:
+			value = String.valueOf(cr.getFloat(columnIndex));
+			break;
+		case Cursor.FIELD_TYPE_STRING:
+			value = cr.getString(columnIndex);
+			break;
+		case Cursor.FIELD_TYPE_BLOB:
+			value = "No support for blob";
+			break;
+		default:
+			value = "known type";	
+			break;
+		}
+		return value;
+	}
+	
 	public static Vector<Map<String, String>> getTableItem(Context context, Uri uri) {
-		Vector<Map<String, String>> vec_table = new Vector<Map<String, String>>();
+		Vector<Map<String, String>> vec_table_items = new Vector<Map<String, String>>();
 		Cursor cr = context.getContentResolver().query(uri, null, null, null, null);
 		if (null != cr) {
 			int itemCount = cr.getCount();
 			int columnCount = cr.getColumnCount();
-			for (int itemIndex=0; itemIndex<itemCount; itemIndex++) {
-				Map<String, String> map_one_raw = new HashMap<String, String>();
-				for (int columnIndex=0; columnIndex<columnCount; columnIndex++) {
-					Log.d(Assistant.TAG, "For the column");
+			while(cr.moveToNext()) { //对于每一行
+				Log.d(Assistant.TAG, "For the row");
+				Map<String, String> items = new HashMap<String, String>();
+				for (int columnIndex=0; columnIndex<columnCount; columnIndex++) { //对于每一列
 					String columnName = cr.getColumnName(columnIndex);
-					int columnType = cr.getType(columnIndex);
-					//String itemValue ="" + cr.getString(columnIndex);
-					Log.d(Assistant.TAG, columnName + ":" + columnType);
-					//map_one_raw.put(columnName, itemValue);
+					String columnValue = getOneItemValueFromColumn(cr, columnIndex);
+					items.put(columnName, columnValue);
 				}
-				vec_table.add(map_one_raw);
+				vec_table_items.add(items);
 			}
 		}
-		
-		return vec_table;
+		return vec_table_items;
 	}
 
 }

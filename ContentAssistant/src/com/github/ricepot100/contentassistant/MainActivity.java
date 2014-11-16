@@ -1,6 +1,9 @@
 package com.github.ricepot100.contentassistant;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Vector;
 
 import android.support.v7.app.ActionBarActivity;
@@ -85,19 +88,21 @@ public class MainActivity extends ActionBarActivity {
 					Log.d(Assistant.TAG, "column[" + i + "]" + "\tname: " + vs.get(i));
 				}
 				
-				 Vector<Map<String, String>> vec_table = ContentHelper.getTableItem(
+				Vector<Map<String, String>> table_items = ContentHelper.getTableItem(
 						 PlaceholderFragment.this.getActivity().getBaseContext(), 
 						 ContactsContract.Contacts.CONTENT_URI);	
-				 /*
-				 for (int i=0; i<vec_table.size(); i++) {
-					 Map<String, String> map_one_raw = vec_table.get(i);
-					 for (int j=0; j<map_one_raw.size(); j++) {
-						 for(String obj : map_one_raw.keySet()){
-							 Log.d(Assistant.TAG, "obj: " + map_one_raw.get(obj));
-						 }
-					 }
-				 }
-				 */
+				
+				for (int rowIndex=0; rowIndex<table_items.size(); rowIndex++) {
+					Map<String, String> one_row_values = table_items.get(rowIndex);
+					Set<Map.Entry<String, String>> entrys = one_row_values.entrySet();
+					Iterator<Map.Entry<String, String>> iterator =  entrys.iterator();
+					while (iterator.hasNext()) {
+						Map.Entry<String, String> entry = iterator.next();
+						if (entry.getValue()!=null) {
+							Log.d(Assistant.TAG, "key(" + entry.getKey() + "):" + "value(" + entry.getValue() + ")");
+						}
+					}
+				}
 				
 			}
 			
