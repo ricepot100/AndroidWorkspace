@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.github.ricepot100.smsserviceproject.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
         </receiver>
         <service android:name=".smsdatabase.SMSDBService" android:exported="true" android:enabled="true">
             <intent-filter>
-                <action android:name="com.github.ricepot100.smsservice.smsdatabase"/>
+                <action android:name="intent.action.start.smsdatabase"/>
             </intent-filter>
         </service>
     </application>

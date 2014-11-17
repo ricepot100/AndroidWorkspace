@@ -1,6 +1,7 @@
 package com.github.ricepot100.contentassistant;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -8,6 +9,9 @@ import java.util.Vector;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -59,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
 	public static class PlaceholderFragment extends Fragment {
 		
 		Button m_btnGetTableColumnName = null;
+		Button m_btnGetServiceList = null;
 
 		public PlaceholderFragment() {
 		}
@@ -70,6 +75,9 @@ public class MainActivity extends ActionBarActivity {
 					false);
 			m_btnGetTableColumnName = (Button)rootView.findViewById(R.id.id_btn_get_table_column_name);
 			m_btnGetTableColumnName.setOnClickListener(new BtnListenerGetColumnName());
+			
+			m_btnGetServiceList = (Button)rootView.findViewById(R.id.id_btn_get_service_list);
+			m_btnGetServiceList.setOnClickListener(new BtuListenGetServiceList());
 			//getActivity().getBaseContext();
 			return rootView;
 		}		
@@ -108,5 +116,20 @@ public class MainActivity extends ActionBarActivity {
 			
 		}
 		
+		private class BtuListenGetServiceList implements OnClickListener {
+			@Override
+			public void onClick(View v) {
+				ActivityManager activeManager = (ActivityManager)PlaceholderFragment.this.getActivity().getBaseContext().getSystemService(Context.ACTIVITY_SERVICE);
+				List<ActivityManager.RunningServiceInfo> services_info = activeManager.getRunningServices(250);
+				Iterator<ActivityManager.RunningServiceInfo> iterator_service = services_info.iterator();
+				while (iterator_service.hasNext()) {
+					ActivityManager.RunningServiceInfo service_info_entry = iterator_service.next();
+					Log.d(Assistant.TAG, service_info_entry.service.getClassName());
+					
+				}
+			}
+			
+		}
 	}
+	
 }

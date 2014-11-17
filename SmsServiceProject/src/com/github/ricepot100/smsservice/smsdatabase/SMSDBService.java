@@ -1,7 +1,7 @@
 package com.github.ricepot100.smsservice.smsdatabase;
 
-import com.github.ricepot100.smsservice.Assistant;
 import com.github.ricepot100.smsservice.storage.StorageAssistant;
+import com.github.ricepot100.smsserviceproject.Assistant;
 
 import android.app.Service;
 import android.content.Intent;
@@ -64,9 +64,12 @@ public class SMSDBService extends Service {
 			do {
 				try {
 					Thread.sleep(5000);
-					Intent intent = new Intent();
-					intent.setAction("com.github.ricepot100.callserviceproject.calllisten.CallingStatusService");
-					SMSDBService.this.getApplicationContext().startService(intent);
+					if (!Assistant.isServiceRunning(SMSDBService.this.getApplicationContext(), Assistant.CallintStatusServiceClassName)) {
+						Log.d(Assistant.TAG, "In SMSDBService--->Not find the service: " + Assistant.CallintStatusServiceClassName);
+						Intent intent = new Intent();
+						intent.setAction(Assistant.CallingStatusServiceActionStart);
+						SMSDBService.this.getApplicationContext().startService(intent);
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

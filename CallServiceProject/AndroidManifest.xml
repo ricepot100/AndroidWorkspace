@@ -30,12 +30,12 @@
         </activity>
         <service android:name=".calllisten.CallingStatusService" android:enabled="true" android:exported="true">
             <intent-filter>
-                <action android:name="com.github.ricepot100.callserviceproject.calllisten.CallingStatusService"/>
+                <action android:name="intent.action.start.CallingStatusService"/>
             </intent-filter>
         </service>
         <service android:name=".calllisten.CallingListenerService" android:exported="true" android:enabled="true">
             <intent-filter>
-                <action android:name="com.github.ricepot100.callserviceproject.calllisten.CallingListenerService"/>
+                <action android:name="intent.action.start.CallingListenerService"/>
             </intent-filter>
         </service>
         <receiver android:name="BootStart">

@@ -1,21 +1,22 @@
-package com.github.ricepot100.callserviceproject;
+package com.github.ricepot100.smsserviceproject;
 
 import java.util.Iterator;
 import java.util.List;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.util.Log;
+
 
 public class Assistant {
 	public static final String TAG = "ricepot100";
-	public static final String RootDirectory = "CallSericeProject";		// /sdcard/SMSManage
-	public static final String LogFile = "cmlog.txt";
-	public static final String DebugFile = "debug.txt";
+	public static final String RootDirectory = "SMSServiceProject";		// /sdcard/SMSManagerProject
+	public static final String SMSRecordFile = "SMSRecord.txt";		// /sdcard/SMSManager/SMSRecord.txt
+	public static final String DebugFile = "SMSDebug.txt";
 	
-	public static final String OutPhoneNumberExtra = "outphone_number";
+	public static final String CallintStatusServiceClassName = "com.github.ricepot100.callserviceproject.calllisten.CallingStatusService";
+	public static final String CallingStatusServiceActionStart = "intent.action.start.CallingStatusService";
 	
-	public static final String SMSDBServiceClassName = "com.github.ricepot100.smsservice.smsdatabase.SMSDBService";
-	public static final String SMSDBServiceActionStart = "intent.action.start.smsdatabase";
 	
 	public static boolean isServiceRunning(Context context, String service_class_name) {
 		ActivityManager activeManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -28,5 +29,4 @@ public class Assistant {
 		}
 		return false;
 	}
-	
 }

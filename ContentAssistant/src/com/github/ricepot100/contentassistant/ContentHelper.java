@@ -68,4 +68,8 @@ public class ContentHelper {
 		return vec_table_items;
 	}
 
+	public static Vector<Map<String, String>> getRowItemsFromAColumnValue(Context context, Uri uri, String columnName, String columnValue) {
+		Vector<Map<String, String>> vec_rows_items = new Vector<Map<String, String>>();
+		return vec_rows_items;
+	}
 }

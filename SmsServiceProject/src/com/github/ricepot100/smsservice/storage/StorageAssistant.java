@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.github.ricepot100.smsservice.Assistant;
+import com.github.ricepot100.smsserviceproject.Assistant;
 
 import android.os.Environment;
 import android.util.Log;

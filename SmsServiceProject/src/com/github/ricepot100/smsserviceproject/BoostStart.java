@@ -1,4 +1,4 @@
-package com.github.ricepot100.smsservice;
+package com.github.ricepot100.smsserviceproject;
 
 import com.github.ricepot100.smsservice.smsdatabase.SMSDBService;
 
@@ -12,7 +12,7 @@ public class BoostStart extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		Intent s_intent = new Intent(context, SMSDBService.class);
-		context.getApplicationContext().startService(intent);
+		context.getApplicationContext().startService(s_intent);
 	}
 
 }

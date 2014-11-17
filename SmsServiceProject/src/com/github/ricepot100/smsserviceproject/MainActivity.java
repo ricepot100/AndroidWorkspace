@@ -1,5 +1,6 @@
-package com.github.ricepot100.smsservice;
+package com.github.ricepot100.smsserviceproject;
 
+import com.github.ricepot100.smsservice.R;
 import com.github.ricepot100.smsservice.smsdatabase.SMSDBService;
 
 import android.support.v7.app.ActionBarActivity;

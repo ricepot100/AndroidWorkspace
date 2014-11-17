@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.github.ricepot100.smsservice.Assistant;
 import com.github.ricepot100.smsservice.storage.StorageAssistant;
+import com.github.ricepot100.smsserviceproject.Assistant;
 
 import android.content.Context;
 import android.database.ContentObserver;

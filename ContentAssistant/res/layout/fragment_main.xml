@@ -23,4 +23,14 @@
         android:layout_marginTop="0dp"
         android:text="@string/id_str_get_table_column_name" />
 
+    <Button
+        android:id="@+id/id_btn_get_service_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/id_btn_get_table_column_name"
+        android:layout_alignRight="@+id/id_btn_get_table_column_name"
+        android:layout_below="@+id/id_btn_get_table_column_name"
+        android:layout_marginTop="40dp"
+        android:text="@string/id_str_get_service_list" />
+
 </RelativeLayout>

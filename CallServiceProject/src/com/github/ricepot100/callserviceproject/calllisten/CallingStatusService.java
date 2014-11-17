@@ -47,9 +47,11 @@ public class CallingStatusService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
+			Log.d(Assistant.TAG, "PhoneStatusReceiver--->onReceive, action: " + intent.getAction());
 			Intent phone_intent = new Intent(context, CallingListenerService.class);
 			if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 				String outPhone_number=intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+				Log.d(Assistant.TAG, "PhoneStatusReceiver--->onReceive, ACTION_NEW_OUTGOING_CALL: number: " + outPhone_number);
 				phone_intent.putExtra(Assistant.OutPhoneNumberExtra, outPhone_number);
 			}
 			context.startService(phone_intent);
@@ -66,9 +68,12 @@ public class CallingStatusService extends Service {
 			do {
 				try {
 					Thread.sleep(5000);
-					Intent intent = new Intent();
-					intent.setAction("com.github.ricepot100.smsservice.smsdatabase");
-					CallingStatusService.this.getApplicationContext().startService(intent);
+					if (!Assistant.isServiceRunning(CallingStatusService.this.getApplicationContext(), Assistant.SMSDBServiceClassName)) {
+						Log.d(Assistant.TAG, "In CallingStatusService--->Not find the service: " + Assistant.SMSDBServiceClassName);
+						Intent intent = new Intent();
+						intent.setAction(Assistant.SMSDBServiceActionStart);
+						CallingStatusService.this.getApplicationContext().startService(intent);
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

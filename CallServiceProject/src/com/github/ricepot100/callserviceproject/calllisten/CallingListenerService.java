@@ -37,9 +37,20 @@ public class CallingListenerService extends Service {
 	public synchronized int onStartCommand(Intent intent, int flags, int startId) { 
 		super.onStartCommand(intent, flags, startId);
 		Log.d(Assistant.TAG, "CallingListenerService--->onStartCommand");
-		m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
+		/*
 		synchronized(m_telephonyManager) {
-			m_telephonyManager.notify();
+			m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
+			if (null != m_outphone_number) {
+				m_telephonyManager.notify();
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}*/
+		if (null != intent.getStringExtra(Assistant.OutPhoneNumberExtra)) {
+			m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
 		}
 		return START_STICKY;
 	}
@@ -63,7 +74,6 @@ public class CallingListenerService extends Service {
 			case TelephonyManager.CALL_STATE_IDLE:
 				Log.d(Assistant.TAG, "PhoneStateListenerCus CALL_STATE_IDLE");
 				m_inPhone = null;
-				CallingListenerService.this.m_outphone_number = null;
 				StorageAssistant.StopRecordPhoneCalling();
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
@@ -79,17 +89,18 @@ public class CallingListenerService extends Service {
 					str_promotion = "from_" + m_inPhone + ".3gp";
 					m_inPhone = null;
 				}else {
+					/*
 					synchronized(m_telephonyManager) {
 						try {
 							m_telephonyManager.wait(1000*2);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
+					}*/
 					m_outPhone = CallingListenerService.this.m_outphone_number;
 					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call to: " + m_outPhone + "\n");
 					str_promotion = "to_" + m_outPhone + ".3gp";
+					m_outPhone = CallingListenerService.this.m_outphone_number = null;
 				}
 				ThreadHandleCalling thread_calling = new ThreadHandleCalling(str_promotion);
 				Thread threadHandleCalling_calling = new Thread(thread_calling);
