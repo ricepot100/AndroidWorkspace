@@ -37,20 +37,15 @@ public class CallingListenerService extends Service {
 	public synchronized int onStartCommand(Intent intent, int flags, int startId) { 
 		super.onStartCommand(intent, flags, startId);
 		Log.d(Assistant.TAG, "CallingListenerService--->onStartCommand");
-		/*
-		synchronized(m_telephonyManager) {
-			m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
-			if (null != m_outphone_number) {
-				m_telephonyManager.notify();
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}*/
+		
 		if (null != intent.getStringExtra(Assistant.OutPhoneNumberExtra)) {
 			m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
+			synchronized(m_telephonyManager) {
+				m_outphone_number = intent.getStringExtra(Assistant.OutPhoneNumberExtra);
+				if (null != m_outphone_number) {
+					m_telephonyManager.notify();
+				}
+			}
 		}
 		return START_STICKY;
 	}
@@ -88,16 +83,29 @@ public class CallingListenerService extends Service {
 					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call from: " + m_inPhone + "\n");
 					str_promotion = "from_" + m_inPhone + ".3gp";
 					m_inPhone = null;
-				}else {
-					/*
-					synchronized(m_telephonyManager) {
-						try {
-							m_telephonyManager.wait(1000*2);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+				}else {									
+					int getOutPhoneNumber = 0;
+					while (null == m_outPhone) { /*从实际调试情况看，PhoneStateListenerCus和PhoneStatusReceiver没有严格的先后顺序，而m_outPhone是从
+					PhoneStatusReceiver中的intent中获取的，可能实际情况是PhoneStatusReceiver中的intent还没有被赋值就，PhoneStateListenerCus就已经被
+					响应了*/
+						m_outPhone = CallingListenerService.this.m_outphone_number;
+						getOutPhoneNumber++;
+						if (null == m_outPhone) {
+							if (3<=getOutPhoneNumber) {
+								StorageAssistant.WriteDebugToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: can not get the out phone number");
+								break;
+							}
+							synchronized(m_telephonyManager) {
+								try {
+									m_telephonyManager.wait(1000*1);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+						} else {
+							StorageAssistant.WriteDebugToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: can get the out phone number: " + m_outPhone);
 						}
-					}*/
-					m_outPhone = CallingListenerService.this.m_outphone_number;
+					}
 					StorageAssistant.WriteCMLogToRecord("PhoneStateListenerCus CALL_STATE_OFFHOOK: call to: " + m_outPhone + "\n");
 					str_promotion = "to_" + m_outPhone + ".3gp";
 					m_outPhone = CallingListenerService.this.m_outphone_number = null;
